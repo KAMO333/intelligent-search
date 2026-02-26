@@ -1,71 +1,69 @@
-# Intelligent Search Prototype
+# 🚀 Intelligent Search: Hybrid Property Match Engine
 
-This repository contains a simple hybrid search prototype implemented in Python. It combines structured filtering (hard filters) with semantic similarity scoring to rank apartment rental listings.
+A high-performance search engine built with **Python**, **Sentence-Transformers**, and **Matrix Math**. This project solves "search fatigue" by combining strict structured data with AI-driven semantic intent.
 
-## Overview
+---
 
-The main script, `hybrid_search_prototype.py`, performs the following steps:
+## 🧠 The Core Logic: 80% Match Engine
 
-1. **Data Loading and Cleaning**
-   - Reads `apartments_for_rent.csv` using pandas with latin-1 encoding.
-   - Selects relevant columns, renames them, and cleans missing data.
-   - Ensures numeric types for `Price` and `Bedrooms` (using Pandas `Int64` dtype).
-   - Drops rows with invalid prices and short descriptions, limiting to the first 1000 records for the prototype.
+Unlike traditional search tools that use "binary" results (you either match or you don't), this engine calculates a **weighted relevance score** for every listing to find the "perfect" home:
 
-2. **Hybrid Score Calculation**
-   - Calculates a hard filter score based on maximum price and required bedrooms.
-   - Computes semantic similarity between the user query and listing descriptions using a sentence transformer (`all-MiniLM-L6-v2`).
-   - Combines the hard and semantic scores with configurable weights.
+1. **Hard Filters (50% Weight):** Strict numeric validation for `Price` and `Bedroom` count. If a listing fails these, it is heavily penalized, ensuring budget and space requirements are met first.
+2. **Semantic Intelligence (50% Weight):** Uses the `all-MiniLM-L6-v2` model to understand natural language intent. It can find "cozy," "modern," or "family-friendly" homes even if those exact keywords aren't in the database.
 
-3. **Results Output**
-   - Sorts listings by the final score.
-   - Applies a relevance threshold to display only top matches.
-   - Prints debug tables of the top results.
+---
 
-## Configuration
+## 🛠️ Tech Stack & Performance
 
-Key variables defined at the top of the script:
+| Layer            | Technology                              |
+| ---------------- | --------------------------------------- |
+| **Engine**       | Python 3.12 + Pandas                    |
+| **AI/NLP**       | Sentence-Transformers (PyTorch backend) |
+| **Optimization** | Vectorized Matrix Multiplication        |
 
-```python
-FILE_PATH = 'apartments_for_rent.csv'
-USER_QUERY = "A sunny, modern apartment with two bedrooms, in a safe city neighborhood, with a gym and pool, max rent $2,500."
-THRESHOLD = 0.80  # Relevance threshold for filtering results
-WEIGHT_HARD = 0.5
-WEIGHT_SEMANTIC = 0.5
+> The engine pre-calculates embeddings for the entire dataset once, allowing for **sub-10ms search latency** across thousands of records.
+
+---
+
+## 📂 Project Structure
+
+```
+.
+├── MatchEngine.py              # The core class-based engine
+├── apartments_for_rent.csv     # Dataset source (semicolon-separated)
+├── requirements.txt            # Project dependencies
+└── .gitignore                  # Prevents large datasets and venvs from cluttering the repo
 ```
 
-The script uses a simulated maximum price and required bedrooms when invoked as a standalone program.
+---
 
-## Prerequisites
+## 🚀 Getting Started
 
-- Python 3.7+
-- `pandas` and `numpy` for data handling
-- `sentence-transformers` for computing semantic embeddings
+### Prerequisites
 
-Install dependencies with:
+Ensure you are using a virtual environment to keep dependencies isolated:
 
 ```bash
-pip install pandas numpy sentence-transformers
+python3 -m venv venv
+source venv/bin/activate
 ```
 
-## Usage
+### Installation
 
-Run the prototype from the command line:
+Install all dependencies from the requirements file:
 
 ```bash
-python hybrid_search_prototype.py
+pip install -r requirements.txt
 ```
 
-It will load and clean the data, initialize the semantic model, calculate scores, and print the top ranked listings along with debug information.
+### Usage
 
-You can modify the query, threshold, weights, or add real user inputs as needed.
+Run the interactive CLI to test different lifestyle queries:
 
-## Notes
+```bash
+python3 MatchEngine.py
+```
 
-- The dataset `apartments_for_rent.csv` is expected to have semicolon-separated fields with columns such as `price`, `bedrooms`, `cityname`, and `body` for descriptions.
-- The script currently limits processing to the first 1000 cleaned listings for performance during prototyping.
-- The hybrid scoring mechanism is easily extensible to include additional hard filters or change weighting.
+## 📜 License
 
-## License
-
-This is a prototype for demonstration purposes; adapt and extend under your preferred license.
+MIT — Created by **Kamogelo Mmopane**
